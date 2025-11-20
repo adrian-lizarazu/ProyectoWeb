@@ -1,2 +1,5 @@
 # ProyectoWeb
-Repositorio -Adrian Lizarazu--Erwin Paredez
+
+Integrantes:
+-Adrian Lizarazu
+-Erwin Paredez

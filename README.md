@@ -23,3 +23,14 @@ o
 node server.js
 
 El servidor corre en: http://localhost:3000/
+
+## Ejecutar MongoDB
+
+Iniciar: net start MongoDB
+Detener: net stop MongoDB
+
+## Postman Ejemplo
+
+(GET, POST, DELETE)
+Ingresar datos en: Body --> raw, JSON con la estructura correspondiente al catalogo o tabla
+http://127.0.0.1:3000/dificultad

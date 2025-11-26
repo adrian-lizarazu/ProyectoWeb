@@ -1,12 +1,29 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const SubcategoriaSchema = new mongoose.Schema({
-  nombre: { type: String, required: true },
-  categoriaId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Categoria",
-    required: true,
-  },
+const subcategoriaSchema = new mongoose.Schema({
+    titulo: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    categoria: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Categoria',
+        required: true
+    },
+    descripcion: {
+        type: String,
+        trim: true
+    },
+    activa: {
+        type: Boolean,
+        default: true
+    }
+}, {
+    timestamps: true
 });
 
-module.exports = mongoose.model("Subcategoria", SubcategoriaSchema);
+// Índice compuesto para evitar subcategorías duplicadas en la misma categoría
+subcategoriaSchema.index({ titulo: 1, categoria: 1 }, { unique: true });
+
+module.exports = mongoose.model('Subcategoria', subcategoriaSchema);

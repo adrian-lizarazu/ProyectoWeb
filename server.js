@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -13,7 +14,7 @@ app.listen(3000, () => {
 });
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/cuestionario")
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB conectado"))
   .catch((err) => console.error(err));
 

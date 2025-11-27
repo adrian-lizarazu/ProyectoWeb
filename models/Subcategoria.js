@@ -23,7 +23,7 @@ const subcategoriaSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Índice compuesto para evitar subcategorías duplicadas en la misma categoría
+
 subcategoriaSchema.index({ titulo: 1, categoria: 1 }, { unique: true });
 
 module.exports = mongoose.model('Subcategoria', subcategoriaSchema);

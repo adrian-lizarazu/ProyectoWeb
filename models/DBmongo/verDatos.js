@@ -11,21 +11,21 @@ const verDatos = async () => {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mi_base_datos');
     console.log('📊 CONTENIDO DE LA BASE DE DATOS\n');
 
-    // Rangos de Edad
-    console.log('🎯 RANGOS DE EDAD:');
+    
+    console.log(' RANGOS DE EDAD:');
     const rangos = await RangoEdad.find().sort({ edadMinima: 1 });
     rangos.forEach(rango => {
       console.log(`   ${rango.edadMinima}-${rango.edadMaxima} años`);
     });
 
-    // Dificultades
-    console.log('\n📈 DIFICULTADES:');
+    
+    console.log('\n DIFICULTADES:');
     const dificultades = await Dificultad.find().sort({ nivel: 1 });
     dificultades.forEach(diff => {
       console.log(`   ${diff.nivel}. ${diff.nombre} (${diff.medida})`);
     });
 
-    // Categorías y Subcategorías
+    
     console.log('\n📂 CATEGORÍAS Y SUBCATEGORÍAS:');
     const categorias = await Categoria.find();
     
@@ -37,7 +37,7 @@ const verDatos = async () => {
       });
     }
 
-    // Estadísticas
+   
     console.log('\n📊 ESTADÍSTICAS:');
     console.log(`   Total Rangos de Edad: ${rangos.length}`);
     console.log(`   Total Dificultades: ${dificultades.length}`);

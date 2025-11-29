@@ -36,19 +36,19 @@ const seedData = async () => {
 
     const dificultades = await Dificultad.insertMany([
       { nombre: "Muy Fácil", medida: "Baja", nivel: 1 },
-      { nombre: "Fácil", medida: "Media-Baja", nivel: 2 },
+      { nombre: "Fácil", medida: "Media Baja", nivel: 2 },
       { nombre: "Intermedia", medida: "Media", nivel: 3 },
-      { nombre: "Difícil", medida: "Media-Alta", nivel: 4 },
+      { nombre: "Difícil", medida: "Media Alta", nivel: 4 },
       { nombre: "Muy Difícil", medida: "Alta", nivel: 5 },
       { nombre: "Experto", medida: "Muy Alta", nivel: 6 },
     ]);
     console.log(`${dificultades.length} niveles de dificultad insertados`);
 
     const categorias = await Categoria.insertMany([
-      { titulo: "Matematicas", descripcion: "" },
+      { titulo: "Matemáticas", descripcion: "" },
       { titulo: "Lenguaje", descripcion: "" },
-      { titulo: "Biologia", descripcion: "" },
-      { titulo: "Computacion", descripcion: "" },
+      { titulo: "Biología", descripcion: "" },
+      { titulo: "Computación", descripcion: "" },
       {
         titulo: "Ciencias Sociales",
         descripcion: "Actividades culinarias y gastronómicas",
@@ -58,25 +58,25 @@ const seedData = async () => {
 
     const subcategorias = await Subcategoria.insertMany([
       { titulo: "Algebra", categoria: categorias[0]._id },
-      { titulo: "Calculo", categoria: categorias[0]._id },
-      { titulo: "Factorizacino", categoria: categorias[0]._id },
+      { titulo: "Cálculo", categoria: categorias[0]._id },
+      { titulo: "Factorización", categoria: categorias[0]._id },
 
       { titulo: "Lectura", categoria: categorias[1]._id },
       { titulo: "Verbos", categoria: categorias[1]._id },
       { titulo: "Sujeto y predicado", categoria: categorias[1]._id },
 
       { titulo: "Zoologia", categoria: categorias[2]._id },
-      { titulo: "Botanica", categoria: categorias[2]._id },
+      { titulo: "Botánica", categoria: categorias[2]._id },
       { titulo: "Vertebrados", categoria: categorias[2]._id },
 
       { titulo: "Programación", categoria: categorias[3]._id },
       { titulo: "Robótica", categoria: categorias[3]._id },
       { titulo: "Diseño Web", categoria: categorias[3]._id },
-      { titulo: "Ofimatica", categoria: categorias[3]._id },
+      { titulo: "Ofimática", categoria: categorias[3]._id },
 
       { titulo: "Historia de Bolivia", categoria: categorias[4]._id },
       { titulo: "Segunda Guerra Mundial", categoria: categorias[4]._id },
-      { titulo: "Geografia", categoria: categorias[4]._id },
+      { titulo: "Geografía", categoria: categorias[4]._id },
     ]);
     console.log(` ${subcategorias.length} subcategorías insertadas`);
 

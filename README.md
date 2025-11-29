@@ -9,12 +9,23 @@
 
 - Node.js LTS
 - npm
+- MongoDB
+- Postman
 
 ## Instalación
 
 1. Clonar el repositorio
 2. Ejecutar:
    npm install
+
+## Ejecutar MongoDB en cmd en modo Administrador
+
+Iniciar: net start MongoDB
+Detener: net stop MongoDB
+
+## Poblado de datos automático (con mongoDB iniciado)
+
+npm run seed
 
 ## Ejecutar el servidor
 
@@ -24,13 +35,7 @@ node server.js
 
 El servidor corre en: http://localhost:3000/
 
-## Ejecutar MongoDB
+## Visualizar datos en Postman Ejemplo
 
-Iniciar: net start MongoDB
-Detener: net stop MongoDB
-
-## Postman Ejemplo
-
-(GET, POST, DELETE)
-Ingresar datos en: Body --> raw, JSON con la estructura correspondiente al catalogo o tabla
+(GET, POST, UPDATE, DELETE)
 http://127.0.0.1:3000/dificultad

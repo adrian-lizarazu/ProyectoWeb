@@ -15,11 +15,6 @@ const categoriaSchema = new mongoose.Schema(
     descripcion: {
       type: String,
       trim: true,
-      validate: {
-        validator: (v) =>
-          v === "" || /^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9 ,.()-]+$/.test(v),
-        message: "La descripción contiene caracteres no permitidos",
-      },
     },
     activa: { type: Boolean, default: true },
   },

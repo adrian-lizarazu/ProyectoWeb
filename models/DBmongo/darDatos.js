@@ -25,59 +25,74 @@ const seedData = async () => {
     await Dificultad.deleteMany({});
     await RangoEdad.deleteMany({});
 
-    const rangosEdad = await RangoEdad.insertMany([
-      { edadMinima: 6, edadMaxima: 8 },
-      { edadMinima: 9, edadMaxima: 12 },
-      { edadMinima: 13, edadMaxima: 17 },
-      { edadMinima: 18, edadMaxima: 25 },
-      { edadMinima: 26, edadMaxima: 40 },
-    ]);
+    const rangosEdad = await RangoEdad.insertMany(
+      [
+        { edadMinima: 6, edadMaxima: 8 },
+        { edadMinima: 9, edadMaxima: 12 },
+        { edadMinima: 13, edadMaxima: 17 },
+        { edadMinima: 18, edadMaxima: 25 },
+        { edadMinima: 26, edadMaxima: 40 },
+      ],
+      { ordered: true, runValidators: true }
+    );
     console.log(`${rangosEdad.length} rangos de edad insertados`);
 
-    const dificultades = await Dificultad.insertMany([
-      { nombre: "Muy Fácil", medida: "Baja", nivel: 1 },
-      { nombre: "Fácil", medida: "Media Baja", nivel: 2 },
-      { nombre: "Intermedia", medida: "Media", nivel: 3 },
-      { nombre: "Difícil", medida: "Media Alta", nivel: 4 },
-      { nombre: "Muy Difícil", medida: "Alta", nivel: 5 },
-      { nombre: "Experto", medida: "Muy Alta", nivel: 6 },
-    ]);
+    const dificultades = await Dificultad.insertMany(
+      [
+        { nombre: "Muy Fácil", medida: "Baja", nivel: 1 },
+        { nombre: "Fácil", medida: "Media Baja", nivel: 2 },
+        { nombre: "Intermedia", medida: "Media", nivel: 3 },
+        { nombre: "Difícil", medida: "Media Alta", nivel: 4 },
+        { nombre: "Muy Difícil", medida: "Alta", nivel: 5 },
+        { nombre: "Experto", medida: "Muy Alta", nivel: 6 },
+      ],
+      { ordered: true, runValidators: true }
+    );
     console.log(`${dificultades.length} niveles de dificultad insertados`);
 
-    const categorias = await Categoria.insertMany([
-      { titulo: "Matemáticas", descripcion: "" },
-      { titulo: "Lenguaje", descripcion: "" },
-      { titulo: "Biología", descripcion: "" },
-      { titulo: "Computación", descripcion: "" },
-      {
-        titulo: "Ciencias Sociales",
-        descripcion: "Actividades culinarias y gastronómicas",
-      },
-    ]);
+    const categorias = await Categoria.insertMany(
+      [
+        {
+          titulo: "Matemáticas",
+          descripcion: "Descripción. no es lo mismo, ¿o si lo es?",
+        },
+        { titulo: "Lenguaje", descripcion: "" },
+        { titulo: "Biología", descripcion: "" },
+        { titulo: "Computación", descripcion: "" },
+        {
+          titulo: "Ciencias Sociales",
+          descripcion: "Actividades culinarias y gastronómicas",
+        },
+      ],
+      { ordered: true, runValidators: true }
+    );
     console.log(`${categorias.length} categorías insertadas`);
 
-    const subcategorias = await Subcategoria.insertMany([
-      { titulo: "Algebra", categoria: categorias[0]._id },
-      { titulo: "Cálculo", categoria: categorias[0]._id },
-      { titulo: "Factorización", categoria: categorias[0]._id },
+    const subcategorias = await Subcategoria.insertMany(
+      [
+        { titulo: "Algebra", categoria: categorias[0]._id },
+        { titulo: "Cálculo", categoria: categorias[0]._id },
+        { titulo: "Factorización", categoria: categorias[0]._id },
 
-      { titulo: "Lectura", categoria: categorias[1]._id },
-      { titulo: "Verbos", categoria: categorias[1]._id },
-      { titulo: "Sujeto y predicado", categoria: categorias[1]._id },
+        { titulo: "Lectura", categoria: categorias[1]._id },
+        { titulo: "Verbos", categoria: categorias[1]._id },
+        { titulo: "Sujeto y predicado", categoria: categorias[1]._id },
 
-      { titulo: "Zoologia", categoria: categorias[2]._id },
-      { titulo: "Botánica", categoria: categorias[2]._id },
-      { titulo: "Vertebrados", categoria: categorias[2]._id },
+        { titulo: "Zoologia", categoria: categorias[2]._id },
+        { titulo: "Botánica", categoria: categorias[2]._id },
+        { titulo: "Vertebrados", categoria: categorias[2]._id },
 
-      { titulo: "Programación", categoria: categorias[3]._id },
-      { titulo: "Robótica", categoria: categorias[3]._id },
-      { titulo: "Diseño Web", categoria: categorias[3]._id },
-      { titulo: "Ofimática", categoria: categorias[3]._id },
+        { titulo: "Programación", categoria: categorias[3]._id },
+        { titulo: "Robótica", categoria: categorias[3]._id },
+        { titulo: "Diseño Web", categoria: categorias[3]._id },
+        { titulo: "Ofimática", categoria: categorias[3]._id },
 
-      { titulo: "Historia de Bolivia", categoria: categorias[4]._id },
-      { titulo: "Segunda Guerra Mundial", categoria: categorias[4]._id },
-      { titulo: "Geografía", categoria: categorias[4]._id },
-    ]);
+        { titulo: "Historia de Bolivia", categoria: categorias[4]._id },
+        { titulo: "Segunda Guerra Mundial", categoria: categorias[4]._id },
+        { titulo: "Geografía", categoria: categorias[4]._id },
+      ],
+      { ordered: true, runValidators: true }
+    );
     console.log(` ${subcategorias.length} subcategorías insertadas`);
 
     console.log("\n ¡Todos los datos insertados correctamente!");

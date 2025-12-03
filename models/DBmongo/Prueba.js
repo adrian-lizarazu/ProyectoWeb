@@ -6,7 +6,7 @@ const RangoEdad = require("../RangoEdad");
 const Dificultad = require("../Dificultad");
 const Categoria = require("../Categoria");
 const Subcategoria = require("../Subcategoria");
-const Usuario = require("../Usuario"); // Nuevo modelo de usuarios
+const Usuario = require("../Usuario"); 
 
 
 const connectDB = async () => {
@@ -20,9 +20,7 @@ const connectDB = async () => {
   }
 };
 
-/* ============================
-   Crear un usuario (admin o editor)
-============================ */
+
 const crearUsuario = async () => {
   try {
     const existe = await Usuario.findOne({ email: "admin@mail.com" });
@@ -49,9 +47,7 @@ const crearUsuario = async () => {
   }
 };
 
-/* ============================
-   Insertar datos base (solo para admin/editor)
-============================ */
+
 const seedData = async () => {
   try {
     console.log("Limpiando datos existentes...");
@@ -60,9 +56,7 @@ const seedData = async () => {
     await Dificultad.deleteMany({});
     await RangoEdad.deleteMany({});
 
-    /* --------------------
-       Rangos de edad
-    -------------------- */
+   
     const rangosEdad = await RangoEdad.insertMany([
       { edadMinima: 6, edadMaxima: 8 },
       { edadMinima: 9, edadMaxima: 12 },
@@ -72,9 +66,8 @@ const seedData = async () => {
     ]);
     console.log(`${rangosEdad.length} rangos de edad insertados`);
 
-    /* --------------------
-       Dificultades
-    -------------------- */
+    
+   
     const dificultades = await Dificultad.insertMany([
       { nombre: "Muy Fácil", medida: "Baja", nivel: 1 },
       { nombre: "Fácil", medida: "Media Baja", nivel: 2 },
@@ -85,9 +78,7 @@ const seedData = async () => {
     ]);
     console.log(`${dificultades.length} niveles de dificultad insertados`);
 
-    /* --------------------
-       Categorías
-    -------------------- */
+    
     const categorias = await Categoria.insertMany([
       { titulo: "Matemáticas", descripcion: "Descripción matemática" },
       { titulo: "Lenguaje", descripcion: "Descripción lenguaje" },
@@ -97,9 +88,7 @@ const seedData = async () => {
     ]);
     console.log(`${categorias.length} categorías insertadas`);
 
-    /* --------------------
-       Subcategorías
-    -------------------- */
+    
     const subcategorias = await Subcategoria.insertMany([
       { titulo: "Algebra", categoria: categorias[0]._id },
       { titulo: "Cálculo", categoria: categorias[0]._id },
@@ -119,9 +108,7 @@ const seedData = async () => {
   }
 };
 
-/* ============================
-   Ejecutar todo
-============================ */
+
 const runSeed = async () => {
   const connected = await connectDB();
   if (!connected) {
@@ -129,8 +116,8 @@ const runSeed = async () => {
     process.exit(1);
   }
 
-  await crearUsuario(); // Crea usuario admin
-  await seedData(); // Crea categorías, subcategorías, rangos y dificultades
+  await crearUsuario(); 
+  await seedData(); 
 
   mongoose.connection.close();
   console.log("Conexión a MongoDB cerrada");

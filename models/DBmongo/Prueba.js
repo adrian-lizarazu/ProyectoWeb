@@ -6,8 +6,7 @@ const RangoEdad = require("../RangoEdad");
 const Dificultad = require("../Dificultad");
 const Categoria = require("../Categoria");
 const Subcategoria = require("../Subcategoria");
-const Usuario = require("../Usuario"); 
-
+const Usuario = require("../Usuario");
 
 const connectDB = async () => {
   try {
@@ -20,12 +19,11 @@ const connectDB = async () => {
   }
 };
 
-
 const crearUsuario = async () => {
   try {
     const existe = await Usuario.findOne({ email: "admin@mail.com" });
     if (existe) {
-      console.log("El usuario admin ya existe");
+      console.log("El usuario administrador ya existe");
       return existe;
     }
 
@@ -35,18 +33,17 @@ const crearUsuario = async () => {
       nombre: "Admin",
       email: "admin@mail.com",
       password: passwordHash,
-      rol: "admin",
+      rol: "Administrador",
       activo: true,
     });
 
     await usuario.save();
-    console.log("Usuario admin creado correctamente");
+    console.log("Usuario administrador creado correctamente");
     return usuario;
   } catch (error) {
     console.error("Error creando usuario:", error.message);
   }
 };
-
 
 const seedData = async () => {
   try {
@@ -56,7 +53,6 @@ const seedData = async () => {
     await Dificultad.deleteMany({});
     await RangoEdad.deleteMany({});
 
-   
     const rangosEdad = await RangoEdad.insertMany([
       { edadMinima: 6, edadMaxima: 8 },
       { edadMinima: 9, edadMaxima: 12 },
@@ -66,8 +62,6 @@ const seedData = async () => {
     ]);
     console.log(`${rangosEdad.length} rangos de edad insertados`);
 
-    
-   
     const dificultades = await Dificultad.insertMany([
       { nombre: "Muy Fácil", medida: "Baja", nivel: 1 },
       { nombre: "Fácil", medida: "Media Baja", nivel: 2 },
@@ -78,17 +72,18 @@ const seedData = async () => {
     ]);
     console.log(`${dificultades.length} niveles de dificultad insertados`);
 
-    
     const categorias = await Categoria.insertMany([
       { titulo: "Matemáticas", descripcion: "Descripción matemática" },
       { titulo: "Lenguaje", descripcion: "Descripción lenguaje" },
       { titulo: "Biología", descripcion: "Descripción biología" },
       { titulo: "Computación", descripcion: "Descripción computación" },
-      { titulo: "Ciencias Sociales", descripcion: "Descripción ciencias sociales" },
+      {
+        titulo: "Ciencias Sociales",
+        descripcion: "Descripción ciencias sociales",
+      },
     ]);
     console.log(`${categorias.length} categorías insertadas`);
 
-    
     const subcategorias = await Subcategoria.insertMany([
       { titulo: "Algebra", categoria: categorias[0]._id },
       { titulo: "Cálculo", categoria: categorias[0]._id },
@@ -108,7 +103,6 @@ const seedData = async () => {
   }
 };
 
-
 const runSeed = async () => {
   const connected = await connectDB();
   if (!connected) {
@@ -116,14 +110,13 @@ const runSeed = async () => {
     process.exit(1);
   }
 
-  await crearUsuario(); 
-  await seedData(); 
+  await crearUsuario();
+  await seedData();
 
   mongoose.connection.close();
   console.log("Conexión a MongoDB cerrada");
   process.exit(0);
 };
-
 
 if (require.main === module) {
   runSeed();

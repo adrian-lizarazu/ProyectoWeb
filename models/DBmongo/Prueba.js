@@ -1,118 +1,149 @@
-const express = require("express");
 const mongoose = require("mongoose");
+require("dotenv").config();
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+
+const RangoEdad = require("../RangoEdad");
+const Dificultad = require("../Dificultad");
+const Categoria = require("../Categoria");
+const Subcategoria = require("../Subcategoria");
+const Usuario = require("../Usuario"); // Nuevo modelo de usuarios
 
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/cuestionarios_test")
-  .then(() => console.log("MongoDB conectado"))
-  .catch((err) => console.log("Error MongoDB:", err));
-
-
-const usuarioSchema = new mongoose.Schema({
-  nombre: String,
-  email: { type: String, unique: true },
-  password: String,
-  rol: { type: String, enum: ["admin", "editor", "estudiante"], default: "estudiante" },
-});
-
-usuarioSchema.pre("save", async function (next) {
-  if (this.isModified("password"))
-    this.password = await bcrypt.hash(this.password, 10);
-  next();
-});
-
-usuarioSchema.methods.verificarPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
-};
-
-const Usuario = mongoose.model("Usuario", usuarioSchema);
-
-const categoriaSchema = new mongoose.Schema({
-  titulo: { type: String, required: true, unique: true },
-  descripcion: String,
-  activa: { type: Boolean, default: true },
-});
-
-const Categoria = mongoose.model("Categoria", categoriaSchema);
-
-
-const auth = (req, res, next) => {
+const connectDB = async () => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) return res.status(401).json({ msg: "Token requerido" });
-
-    const decoded = jwt.verify(token, "secreto123");
-    req.usuario = decoded;
-    next();
-  } catch (err) {
-    res.status(401).json({ msg: "Token inválido" });
-  }
-};
-
-const soloAdmin = (req, res, next) => {
-  if (req.usuario.rol !== "admin")
-    return res.status(403).json({ msg: "Solo admin" });
-  next();
-};
-
-const soloEditor = (req, res, next) => {
-  if (req.usuario.rol === "admin" || req.usuario.rol === "editor")
-    return next();
-  res.status(403).json({ msg: "Solo editor/admin" });
-};
-
-
-const app = express();
-app.use(express.json());
-
-
-
-
-app.post("/usuarios/crear", auth, soloAdmin, async (req, res) => {
-  try {
-    const nuevo = new Usuario(req.body);
-    await nuevo.save();
-    res.json({ msg: "Usuario creado", nuevo });
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("MongoDB conectado correctamente");
+    return true;
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error conectando a MongoDB:", error.message);
+    return false;
   }
-});
+};
 
-
-app.post("/usuarios/login", async (req, res) => {
-  const { email, password } = req.body;
-  const u = await Usuario.findOne({ email });
-
-  if (!u) return res.status(404).json({ msg: "Usuario no existe" });
-
-  const ok = await u.verificarPassword(password);
-  if (!ok) return res.status(401).json({ msg: "Credenciales incorrectas" });
-
-  const token = jwt.sign({ id: u._id, rol: u.rol }, "secreto123", {
-    expiresIn: "7d",
-  });
-
-  res.json({ token });
-});
-
-
-app.post("/categoria", auth, soloEditor, async (req, res) => {
+/* ============================
+   Crear un usuario (admin o editor)
+============================ */
+const crearUsuario = async () => {
   try {
-    const cat = new Categoria(req.body);
-    await cat.save();
-    res.json({ msg: "Categoría creada", categoria: cat });
+    const existe = await Usuario.findOne({ email: "admin@mail.com" });
+    if (existe) {
+      console.log("El usuario admin ya existe");
+      return existe;
+    }
+
+    const passwordHash = await bcrypt.hash("123456", 10);
+
+    const usuario = new Usuario({
+      nombre: "Admin",
+      email: "admin@mail.com",
+      password: passwordHash,
+      rol: "admin",
+      activo: true,
+    });
+
+    await usuario.save();
+    console.log("Usuario admin creado correctamente");
+    return usuario;
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error creando usuario:", error.message);
   }
-});
+};
+
+/* ============================
+   Insertar datos base (solo para admin/editor)
+============================ */
+const seedData = async () => {
+  try {
+    console.log("Limpiando datos existentes...");
+    await Subcategoria.deleteMany({});
+    await Categoria.deleteMany({});
+    await Dificultad.deleteMany({});
+    await RangoEdad.deleteMany({});
+
+    /* --------------------
+       Rangos de edad
+    -------------------- */
+    const rangosEdad = await RangoEdad.insertMany([
+      { edadMinima: 6, edadMaxima: 8 },
+      { edadMinima: 9, edadMaxima: 12 },
+      { edadMinima: 13, edadMaxima: 17 },
+      { edadMinima: 18, edadMaxima: 25 },
+      { edadMinima: 26, edadMaxima: 40 },
+    ]);
+    console.log(`${rangosEdad.length} rangos de edad insertados`);
+
+    /* --------------------
+       Dificultades
+    -------------------- */
+    const dificultades = await Dificultad.insertMany([
+      { nombre: "Muy Fácil", medida: "Baja", nivel: 1 },
+      { nombre: "Fácil", medida: "Media Baja", nivel: 2 },
+      { nombre: "Intermedia", medida: "Media", nivel: 3 },
+      { nombre: "Difícil", medida: "Media Alta", nivel: 4 },
+      { nombre: "Muy Difícil", medida: "Alta", nivel: 5 },
+      { nombre: "Experto", medida: "Muy Alta", nivel: 6 },
+    ]);
+    console.log(`${dificultades.length} niveles de dificultad insertados`);
+
+    /* --------------------
+       Categorías
+    -------------------- */
+    const categorias = await Categoria.insertMany([
+      { titulo: "Matemáticas", descripcion: "Descripción matemática" },
+      { titulo: "Lenguaje", descripcion: "Descripción lenguaje" },
+      { titulo: "Biología", descripcion: "Descripción biología" },
+      { titulo: "Computación", descripcion: "Descripción computación" },
+      { titulo: "Ciencias Sociales", descripcion: "Descripción ciencias sociales" },
+    ]);
+    console.log(`${categorias.length} categorías insertadas`);
+
+    /* --------------------
+       Subcategorías
+    -------------------- */
+    const subcategorias = await Subcategoria.insertMany([
+      { titulo: "Algebra", categoria: categorias[0]._id },
+      { titulo: "Cálculo", categoria: categorias[0]._id },
+      { titulo: "Lectura", categoria: categorias[1]._id },
+      { titulo: "Verbos", categoria: categorias[1]._id },
+      { titulo: "Zoología", categoria: categorias[2]._id },
+      { titulo: "Botánica", categoria: categorias[2]._id },
+      { titulo: "Programación", categoria: categorias[3]._id },
+      { titulo: "Robótica", categoria: categorias[3]._id },
+      { titulo: "Historia", categoria: categorias[4]._id },
+    ]);
+    console.log(`${subcategorias.length} subcategorías insertadas`);
+
+    console.log("\n¡Datos insertados correctamente!");
+  } catch (error) {
+    console.error("Error insertando datos:", error.message);
+  }
+};
+
+/* ============================
+   Ejecutar todo
+============================ */
+const runSeed = async () => {
+  const connected = await connectDB();
+  if (!connected) {
+    console.log("No se pudo conectar a la base de datos");
+    process.exit(1);
+  }
+
+  await crearUsuario(); // Crea usuario admin
+  await seedData(); // Crea categorías, subcategorías, rangos y dificultades
+
+  mongoose.connection.close();
+  console.log("Conexión a MongoDB cerrada");
+  process.exit(0);
+};
 
 
-app.get("/categoria", auth, async (req, res) => {
-  const lista = await Categoria.find();
-  res.json(lista);
-});
+if (require.main === module) {
+  runSeed();
+}
 
-
-app.listen(3000, () => console.log("Servidor en http://localhost:3000"));
+module.exports = {
+  connectDB,
+  crearUsuario,
+  seedData,
+};

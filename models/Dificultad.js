@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/;
+
 const dificultadSchema = new mongoose.Schema(
   {
     nombre: {
@@ -8,8 +10,13 @@ const dificultadSchema = new mongoose.Schema(
       trim: true,
       unique: true,
       validate: {
-        validator: (v) => /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/.test(v),
-        message: "El nombre solo puede contener letras y espacios",
+        validator: (v) => {
+          if (!v) return false;
+          const texto = v.trim();
+          if (texto.length === 0) return false;
+          return soloLetras.test(texto);
+        },
+        message: "El nombre solo puede contener letras y no puede estar vacío",
       },
     },
     medida: {
@@ -17,8 +24,13 @@ const dificultadSchema = new mongoose.Schema(
       required: [true, "La medida es obligatoria"],
       trim: true,
       validate: {
-        validator: (v) => /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/.test(v),
-        message: "La medida solo puede contener letras y espacios",
+        validator: (v) => {
+          if (!v) return false;
+          const texto = v.trim();
+          if (texto.length === 0) return false;
+          return soloLetras.test(texto);
+        },
+        message: "La medida solo puede contener letras y no puede estar vacía",
       },
     },
     nivel: {

@@ -1,0 +1,77 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# Ejemplo de uso en Postman
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## Inicio de sesión en Postman
+1. POST http://127.0.0.1:3000/auth
+2. Body --> raw --> JSON:
+    {
+        "email": "admin@mail.com",
+        "password": "123456"
+    }
+3. Send 
+// Si los datos coinciden con los datos de la BD, devuelve un token
+
+4. POST http://127.0.0.1:3000/usuarios/crear
+5. Headers --> key: Authorization, value: Bearer PEGAR_TOKEN_AQUI
+6. Body --> raw --> JSON:
+{
+  "nombre": "Juan Perez",
+  "email": "juan@mail.com",
+  "password": "123456",
+  "rol": "Estudiante"
+}
+7. Send
+8. Cuenta de estudiante creado correctamente.
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## Responder cuestionarios como Estudiante
+1. POST http://127.0.0.1:3000/auth
+2. Body --> raw --> JSON:
+    {
+        "email": "juan@mail.com",
+        "password": "123456"
+    }
+3. Send 
+// Si los datos coinciden con los datos de la BD, devuelve un token
+
+4. POST http://127.0.0.1:3000/cuestionarios/responder
+5. Headers --> key: Authorization, value: Bearer PEGAR_TOKEN_AQUI
+6. Send
+7. Debe salir:
+    {
+        "mensaje": "Cuestionario respondido correctamente"
+    }
+// Es solo verificar que solo el Estudiante tiene acceso a responder cuestionarios, cuestionarios todavia no está implementado
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+## Agregar o modificar datos de preguntas como Editor
+1. POST http://127.0.0.1:3000/auth
+2. Body --> raw --> JSON:
+    {
+        "email": "editor@mail.com",
+        "password": "123456"
+    }
+3. Send 
+// Si los datos coinciden con los datos de la BD, devuelve un token
+
+4. POST http://127.0.0.1:3000/editor/dificultad
+5. Headers --> key: Authorization, value: Bearer PEGAR_TOKEN_AQUI
+6. Body --> raw --> JSON:
+    { 
+        "nombre": "Imposible", 
+        "medida": "Muy pero muy alta", 
+        "nivel": 10
+    }
+7. Send
+8. Campo de Categoria creado correctamente.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

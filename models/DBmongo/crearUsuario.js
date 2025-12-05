@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const bcrypt = require("bcryptjs");
+//const bcrypt = require("bcryptjs");
 const Usuario = require("../Usuario");
-const { getActiveUser } = require("../../authState");
 
 const connectDB = async () => {
   try {
@@ -27,8 +26,10 @@ function validarRol(rol) {
   return ["Administrador", "Editor", "Estudiante"].includes(rol);
 }
 
-async function crearUsuario(nombre, email, password, rolDeseado) {
-  const rolActual = getActiveUser();
+async function crearUsuario(req, res) {
+  const { nombre, email, password, rolDeseado } = req.body;
+  const rolActual = req.user.rol;
+
   if (!nombre || !email || !password || !rolDeseado) {
     throw new Error("Faltan parámetros: nombre, email, password o rolDeseado.");
   }
@@ -67,12 +68,12 @@ async function crearUsuario(nombre, email, password, rolDeseado) {
   if (existe)
     throw new Error("Ya existe un usuario con ese correo electrónico.");
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  //const passwordHash = await bcrypt.hash(password, 10);
 
   const usuario = new Usuario({
     nombre,
     email,
-    password: passwordHash,
+    password,
     rol: rolDeseado,
     activo: true,
   });

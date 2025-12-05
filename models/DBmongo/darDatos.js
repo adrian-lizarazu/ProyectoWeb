@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { getActiveUser } = require("../../authState");
 require("dotenv").config();
 
 const RangoEdad = require("../RangoEdad");
@@ -19,13 +18,6 @@ const connectDB = async () => {
 };
 
 const seedData = async () => {
-  const rolActual = getActiveUser();
-
-  if (rolActual !== "Editor") {
-    console.log("Error: solo el Editor puede poblar la base de datos.");
-    return;
-  }
-
   try {
     console.log("Limpiando datos existentes");
     await Subcategoria.deleteMany({});

@@ -44,12 +44,20 @@ En el Simbolo del sistema (cmd) de la computadora (abierto en modo administrador
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-## 6. Iniciar el servidor de Express
+## 6. Colocar los certificados para el funcionamiento de https
+
+En la carpeta "certs" sera donde se ubicaran los certificados 
+Si fuera necesario ejecutar este comando para la descarga:
+openssl req -newkey rsa:2048 -nodes -keyout certs/localhost.key -x509 -days 365 -out certs/localhost.crt
+se crearan dos archivos (localhost.crt  y  localhost.key)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+## 7. Iniciar el servidor de Express
 En la terminal, dentro de la carpeta del proyecto, ejecutar: "node server.js"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-## 7. Abrir Postman para su uso 
+## 8. Abrir Postman para su uso 
 Ejemplo 1: Crear cuenta de administrador
   i. POST https://localhost:8443/usuarios/crear
   ii. Body --> raw --> JSON:

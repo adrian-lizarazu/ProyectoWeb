@@ -1,11 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-# Ejemplo de uso en Postman
+# Ejemplo de uso en Postman (Autenticazión de usuarios con JWT y restricción de permisos según rol)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Restricciones implementadas
+- Solo un Administrador puede crear cuentas de estudiantes en https://localhost:8443/usuarios/crear
+- Solo un Estudiante puede acceder a https://localhost:8443/cuestionarios/responder
+- Solo un Editor puede crear categorias, subcategorias, rango de edades, y dificultad. (ejemplo: https://localhost:8443/editor/categoria)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ## Inicio de sesión en Postman
-1. POST http://127.0.0.1:3000/auth
+1. POST https://localhost:8443/auth
 2. Body --> raw --> JSON:
     {
         "email": "admin@mail.com",
@@ -14,7 +21,7 @@
 3. Send 
 // Si los datos coinciden con los datos de la BD, devuelve un token
 
-4. POST http://127.0.0.1:3000/usuarios/crear
+4. POST https://localhost:8443/usuarios/crear
 5. Headers --> key: Authorization, value: Bearer PEGAR_TOKEN_AQUI
 6. Body --> raw --> JSON:
 {
@@ -31,7 +38,7 @@
 
 
 ## Responder cuestionarios como Estudiante
-1. POST http://127.0.0.1:3000/auth
+1. POST https://localhost:8443/auth
 2. Body --> raw --> JSON:
     {
         "email": "juan@mail.com",
@@ -40,7 +47,7 @@
 3. Send 
 // Si los datos coinciden con los datos de la BD, devuelve un token
 
-4. POST http://127.0.0.1:3000/cuestionarios/responder
+4. POST https://localhost:8443/cuestionarios/responder
 5. Headers --> key: Authorization, value: Bearer PEGAR_TOKEN_AQUI
 6. Send
 7. Debe salir:
@@ -54,7 +61,7 @@
 
 
 ## Agregar o modificar datos de preguntas como Editor
-1. POST http://127.0.0.1:3000/auth
+1. POST https://localhost:8443/auth
 2. Body --> raw --> JSON:
     {
         "email": "editor@mail.com",
@@ -63,7 +70,7 @@
 3. Send 
 // Si los datos coinciden con los datos de la BD, devuelve un token
 
-4. POST http://127.0.0.1:3000/editor/dificultad
+4. POST https://localhost:8443/editor/dificultad
 5. Headers --> key: Authorization, value: Bearer PEGAR_TOKEN_AQUI
 6. Body --> raw --> JSON:
     { 

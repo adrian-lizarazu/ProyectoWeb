@@ -14,28 +14,8 @@
 
 ## Instalación
 
-1. Clonar el repositorio
-2. Ejecutar:
-   npm install
+Revisar el archivo install.txt
 
-## Ejecutar MongoDB en cmd en modo Administrador
+## Ejemplos de uso
 
-Iniciar: net start MongoDB
-Detener: net stop MongoDB
-
-## Poblado de datos automático (con mongoDB iniciado)
-
-npm run seed
-
-## Ejecutar el servidor
-
-npm start
-o
-node server.js
-
-El servidor corre en: http://localhost:3000/
-
-## Visualizar datos en Postman Ejemplo
-
-(GET, POST, UPDATE, DELETE)
-http://127.0.0.1:3000/dificultad
+Revisar el archivo ejemploRestricciones.txt

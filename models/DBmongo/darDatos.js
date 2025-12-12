@@ -54,7 +54,8 @@ const seedData = async () => {
       [
         {
           titulo: "Matemáticas",
-          descripcion: "Descripción. no es lo mismo, ¿o si lo es?",
+          descripcion:
+            "Para todos los niveles, desde primaria hasta secundaria.",
         },
         { titulo: "Lenguaje", descripcion: "" },
         { titulo: "Biología", descripcion: "" },

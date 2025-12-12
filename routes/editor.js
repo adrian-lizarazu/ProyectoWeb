@@ -1,27 +1,25 @@
 const express = require("express");
 const router = express.Router();
-const soloEditor = require("../middlewares/soloEditor");
-const {
-  crearCategoria,
-  actualizarCategoria,
-  crearSubcategoria,
-  actualizarSubcategoria,
-  crearDificultad,
-  actualizarDificultad,
-  crearRangoEdad,
-  actualizarRangoEdad,
-} = require("../Control/editorController");
+const editorController = require("../Control/editorController");
 
-router.post("/categoria", soloEditor, crearCategoria);
-router.put("/categoria/:id", soloEditor, actualizarCategoria);
+// CATEGORÍA
+router.get("/categoria", editorController.obtenerCategorias);
+router.post("/categoria", editorController.crearCategoria);
+router.put("/categoria/:id", editorController.actualizarCategoria);
 
-router.post("/subcategoria", soloEditor, crearSubcategoria);
-router.put("/subcategoria/:id", soloEditor, actualizarSubcategoria);
+// SUBCATEGORÍA
+router.get("/subcategoria", editorController.obtenerSubcategorias);
+router.post("/subcategoria", editorController.crearSubcategoria);
+router.put("/subcategoria/:id", editorController.actualizarSubcategoria);
 
-router.post("/dificultad", soloEditor, crearDificultad);
-router.put("/dificultad/:id", soloEditor, actualizarDificultad);
+// DIFICULTAD
+router.get("/dificultad", editorController.obtenerDificultades);
+router.post("/dificultad", editorController.crearDificultad);
+router.put("/dificultad/:id", editorController.actualizarDificultad);
 
-router.post("/rangoEdad", soloEditor, crearRangoEdad);
-router.put("/rangoEdad/:id", soloEditor, actualizarRangoEdad);
+// RANGO EDAD
+router.get("/rangoEdad", editorController.obtenerRangosEdad);
+router.post("/rangoEdad", editorController.crearRangoEdad);
+router.put("/rangoEdad/:id", editorController.actualizarRangoEdad);
 
 module.exports = router;

@@ -1,0 +1,75 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# Guia de instalación para funcionamiento del Proyecto
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 1. Clonar el repositorio
+git clone https://github.com/adrian-lizarazu/ProyectoWeb.git
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 2. Instalar Node.js y MongoDB
+2.1. Debe instalar en su computadora Node.js LTS desde: https://nodejs.org/
+
+2.2. Instalar postman desde: https://www.postman.com/downloads/
+
+2.3. E instalar MongoDB desde: https://www.mongodb.com/try/download/community
+
+Una vez instalado MongoDB correctamente,  dirigirse a la ruta donde se instalaron los archivos ..., 
+para copiar el directorio e ingresarlo como una variable de entorno. (Es una ruta similar a "C:\Program Files\MongoDB\Server\8.2\bin")
+
+Este equipo (Propiedades) --> Configuración avanzada --> Variables de entorno --> Path (editar) --> Nuevo --> pegamos la ruta "C:\Program Files\MongoDB\Server\8.2\bin"
+
+Abrimos otra vez la consola y ejecutamos "mongod.exe --version", para verificar que mongodb funciona globalmente.
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 3. Instalar dependencias
+En la terminal, dentro de la carpeta del proyecto, ejecutar (en nuestro caso en Visual Studio Code): "npm install"
+(Esto instalará todas las dependencias listadas en el package.json)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 4. Crear el archivo .env
+Dentro de la carpeta del proyecto crear el archivo con el nombre ".env", y con el contenido: 
+"MONGODB_URI=mongodb://127.0.0.1:27017/cuestionario
+JWT_SECRET=123456" 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 5. Iniciar el servidor de MongoDB
+En el Simbolo del sistema (cmd) de la computadora (abierto en modo administrador) ejecutar: "net start MongoDB"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 6. Iniciar el servidor de Express
+En la terminal, dentro de la carpeta del proyecto, ejecutar: "node server.js"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## 7. Abrir Postman para su uso 
+Ejemplo 1: Crear cuenta de administrador
+  i. POST https://localhost:8443/usuarios/crear
+  ii. Body --> raw --> JSON:
+  {
+    "nombre": "Administrador Juan",
+    "email": "adminj@mail.com",
+    "password": "123456",
+    "rol": "Administrador"
+  }
+
+Ejemplo 2: Ver las categorias creadas
+  i. GET https://localhost:8443/editor/categoria
+
+- Para más ejemplos revisar el archivo ejemploRestricciones.txt
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+## (opcional) 8. LLenado automatico de la BD, solo para pruebas
+Para hacer pruebas, nosotros ejecutamos en la terminal del proyecto: "node .\models\DBmongo\darDatos.js"
+De este modo ya existe una cuenta de Administrador, Editor y Estudiante.
+Además de categorias, subcategorias, rangos de edad y dificultad para las preguntas del cuestionario (el cual no ha sido implementado)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

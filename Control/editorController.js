@@ -3,6 +3,15 @@ const Subcategoria = require("../models/Subcategoria");
 const Dificultad = require("../models/Dificultad");
 const RangoEdad = require("../models/RangoEdad");
 
+exports.obtenerCategorias = async (req, res) => {
+  try {
+    const categorias = await Categoria.find();
+    res.json(categorias);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 exports.crearCategoria = async (req, res) => {
   try {
     const { titulo, descripcion } = req.body;
@@ -17,18 +26,28 @@ exports.actualizarCategoria = async (req, res) => {
   try {
     const { id } = req.params;
     const { titulo, descripcion } = req.body;
+
     const categoria = await Categoria.findByIdAndUpdate(
       id,
       { titulo, descripcion },
       { new: true }
     );
+
     res.json({ mensaje: "Categoría actualizada", categoria });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-// Lo mismo para Subcategoria, Dificultad y RangoEdad
+exports.obtenerSubcategorias = async (req, res) => {
+  try {
+    const subcategorias = await Subcategoria.find().populate("categoria");
+    res.json(subcategorias);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 exports.crearSubcategoria = async (req, res) => {
   try {
     const { titulo, categoria } = req.body;
@@ -43,12 +62,23 @@ exports.actualizarSubcategoria = async (req, res) => {
   try {
     const { id } = req.params;
     const { titulo, categoria } = req.body;
+
     const subcategoria = await Subcategoria.findByIdAndUpdate(
       id,
       { titulo, categoria },
       { new: true }
     );
+
     res.json({ mensaje: "Subcategoría actualizada", subcategoria });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.obtenerDificultades = async (req, res) => {
+  try {
+    const dificultades = await Dificultad.find();
+    res.json(dificultades);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -68,12 +98,23 @@ exports.actualizarDificultad = async (req, res) => {
   try {
     const { id } = req.params;
     const { nombre, medida, nivel } = req.body;
+
     const dificultad = await Dificultad.findByIdAndUpdate(
       id,
       { nombre, medida, nivel },
       { new: true }
     );
+
     res.json({ mensaje: "Dificultad actualizada", dificultad });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.obtenerRangosEdad = async (req, res) => {
+  try {
+    const rangos = await RangoEdad.find();
+    res.json(rangos);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -93,11 +134,13 @@ exports.actualizarRangoEdad = async (req, res) => {
   try {
     const { id } = req.params;
     const { edadMinima, edadMaxima } = req.body;
+
     const rangoEdad = await RangoEdad.findByIdAndUpdate(
       id,
       { edadMinima, edadMaxima },
       { new: true }
     );
+
     res.json({ mensaje: "Rango de edad actualizado", rangoEdad });
   } catch (err) {
     res.status(400).json({ error: err.message });
